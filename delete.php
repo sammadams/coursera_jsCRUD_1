@@ -1,7 +1,5 @@
 <?php
-
-// Totally wrong
-
+// DONE -- working
 require_once "pdo.php";
 session_start();
 
@@ -36,10 +34,16 @@ if ( $row === false ) {
 }
 
 ?>
+<html>
+  <head>
+    <title>Samuel Adams</title>
+  </head>
+<body>
 <p>Confirm: Deleting <?= htmlentities($row['first_name']." ".htmlentities($row['last_name'])) ?></p>
-
 <form method="post">
 <input type="hidden" name="profile_id" value="<?= $row['profile_id'] ?>">
 <input type="submit" value="Delete" name="delete">
 <input type="submit" value="Cancel" name="cancel">
 </form>
+</body>
+</html>
