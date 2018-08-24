@@ -27,27 +27,38 @@ if ( !isset($_SESSION['name']) ) {
 };
 // display table
 echo('<table border="1">'."\n");
-$stmt = $pdo->query("SELECT name, email, password, user_id FROM users");
+echo("<thead><td>Full Name</td><td>Headline</td>");
+if ( isset($_SESSION['name']) ) {
+    echo("<td>Actions</td>");};
+echo("</thead>");
+$sql = "SELECT profile_id, user_id, first_name, last_name, headline FROM profile";
+$stmt = $pdo->query($sql);
 while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
-    echo "<tr><td>";
-    echo(htmlentities($row['name']));
+    echo("<tr><td>");
+    echo(htmlentities($row['first_name'])." ".htmlentities($row['last_name']));
     echo("</td><td>");
     echo(htmlentities($row['headline']));
     echo("</td>");
-
     // set condition for user_id to show actions
-    echo("<td>");
-    echo('<a href="edit.php?user_id='.$row['user_id'].'">Edit</a> / ');
-    echo('<a href="delete.php?user_id='.$row['user_id'].'">Delete</a>');
-    echo("</td></tr>\n");
-    // end condition
-    echo('</table>');
-}
+    if( isset($_SESSION['name']) ) {
+        if( ( $_SESSION['user_id'] == $row['user_id'] ) ) {
+            echo("<td>");
+            echo('<a href="edit.php?profile_id='.$row['profile_id'].'">Edit</a> / ');
+            echo('<a href="delete.php?profile_id='.$row['profile_id'].'">Delete</a>');
+            echo('</td>');
+        } else {
+            echo("<td>No Access for this user</td>");
+        };
+    };
+    echo("</tr>");
+};
+echo('</table>');
 ?>
 
 <?php
 if ( isset($_SESSION['name']) ) {
-    echo('<a href="add.php">Add New</a>');
+    echo('<a href="add.php">Add New</a><br/>');
+    echo('<a href=logout.php>Logout</a>');
 };
 ?>
 </body>
